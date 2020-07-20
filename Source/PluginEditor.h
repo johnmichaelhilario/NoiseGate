@@ -37,7 +37,8 @@ private:
     NoiseGateAudioProcessor& audioProcessor;
     Slider thresholdSlider;
     Slider smoothSlider; //also known as return
-
+    Label  thresholdLabel;
+    Label  smoothLabel;
 
     JUCE_DECLARE_NON_COPYABLE_WITH_LEAK_DETECTOR (NoiseGateAudioProcessorEditor)
 };
