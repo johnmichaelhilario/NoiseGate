@@ -17,15 +17,14 @@ NoiseGateAudioProcessor::NoiseGateAudioProcessor()
      : AudioProcessor (BusesProperties().withInput("Input", juce::AudioChannelSet::stereo())          
                                         .withOutput("Output", juce::AudioChannelSet::stereo())
                                         .withInput("Sidechain", juce::AudioChannelSet::stereo())
-                       )
+                       ), 
+    threshold("threshold", "Threshold", 0.0f, 1.0f, 0.0f),
+    smooth("smooth", "Smooth", 0.0f, 1.0f, 0.8f)
 #endif
 {
+    
+   
 
-    addParameter(threshold = new juce::AudioParameterFloat("threshold", "Threshold", 0.0f, 1.0f, 0.0f));  // [2]
-    addParameter(smooth = new juce::AudioParameterFloat("smooth", "Smooth", 0.0f, 1.0f, 0.8f));
-
- /*   smoothCopy = smooth->get();
-    thresholdCopy = threshold->get();*/
 }
 
 NoiseGateAudioProcessor::~NoiseGateAudioProcessor()
@@ -136,6 +135,9 @@ void NoiseGateAudioProcessor::processBlock (juce::AudioBuffer<float>& buffer, ju
     auto mainInputOutput = getBusBuffer(buffer, true, 0);                                  
     auto sideChainInput = getBusBuffer(buffer, true, 1);
 
+    auto thresholdCopy = threshold.get();
+    auto smoothCopy = smooth.get();
+
 
     for (auto j = 0; j < buffer.getNumSamples(); ++j)                                       
     {
@@ -181,16 +183,16 @@ void NoiseGateAudioProcessor::getStateInformation (juce::MemoryBlock& destData)
 
     MemoryOutputStream stream(destData, true);
 
-    stream.writeFloat(*threshold);
-    stream.writeFloat(*smooth);
+    stream.writeFloat(threshold);
+    stream.writeFloat(smooth);
 }
 
 void NoiseGateAudioProcessor::setStateInformation (const void* data, int sizeInBytes)
 {
     MemoryInputStream stream(data, static_cast<size_t> (sizeInBytes), false);
 
-    threshold->setValueNotifyingHost(stream.readFloat());
-    smooth->setValueNotifyingHost(stream.readFloat());
+    threshold.setValueNotifyingHost(stream.readFloat());
+    smooth.setValueNotifyingHost(stream.readFloat());
     // You should use this method to restore your parameters from this memory block,
     // whose contents will have been created by the getStateInformation() call.
 }
@@ -201,4 +203,3 @@ juce::AudioProcessor* JUCE_CALLTYPE createPluginFilter()
 {
     return new NoiseGateAudioProcessor();
 }
-

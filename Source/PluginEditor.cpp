@@ -61,9 +61,10 @@ void NoiseGateAudioProcessorEditor::resized()
 
 void NoiseGateAudioProcessorEditor::sliderValueChanged(Slider* slider) {
     if (slider == &thresholdSlider) {
-        audioProcessor.thresholdCopy = thresholdSlider.getValue();
+        //audioProcessor.thresholdCopy = thresholdSlider.getValue();
+        audioProcessor.threshold = (float) thresholdSlider.getValue();
     }
     else if(slider == &smoothSlider) {
-        audioProcessor.smoothCopy = smoothSlider.getValue();
+        audioProcessor.smooth = (float) smoothSlider.getValue();
     }
 }
