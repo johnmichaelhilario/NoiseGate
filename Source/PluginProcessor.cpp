@@ -22,7 +22,8 @@ NoiseGateAudioProcessor::NoiseGateAudioProcessor()
     smooth("smooth", "Smooth", 0.0f, 1.0f, 0.8f)
 #endif
 {
-    
+    addParameter(&threshold);
+    addParameter(&smooth);
    
 
 }
@@ -96,6 +97,8 @@ void NoiseGateAudioProcessor::changeProgramName (int index, const juce::String& 
 //==============================================================================
 void NoiseGateAudioProcessor::prepareToPlay (double sampleRate, int samplesPerBlock)
 {
+    lowPassCoeff = 0.0f;    // [3]
+    sampleCountDown = 0;    // [4]
     // Use this method as the place to do any pre-playback
     // initialisation that you need..
 }
