@@ -36,6 +36,14 @@ NoiseGateAudioProcessorEditor::NoiseGateAudioProcessorEditor (NoiseGateAudioProc
     smoothSlider.setValue(0.0f);
     smoothSlider.addListener(this);
     
+
+    //Power button
+    powerButton.setButtonText("Power");
+
+    addAndMakeVisible(&powerButton);
+    powerButton.onClick = [this] {
+        audioProcessor.isPowerOn = powerButton.getToggleState();
+    };
     addAndMakeVisible(&thresholdSlider);
     addAndMakeVisible(&smoothSlider);
     setSize (400, 300);
@@ -59,16 +67,15 @@ void NoiseGateAudioProcessorEditor::paint (juce::Graphics& g)
 
 void NoiseGateAudioProcessorEditor::resized()
 {
-    // This is generally where you'll want to lay out the positions of any
-    // subcomponents in your editor..
     auto sliderLeft = 120;
-    thresholdSlider.setBounds (sliderLeft, 20, getWidth() - sliderLeft - 10, 20);
-    smoothSlider .setBounds (sliderLeft, 50, getWidth() - sliderLeft - 10, 20);
+    powerButton.setBounds(sliderLeft, 0, 100, 50);
+    thresholdSlider.setBounds (sliderLeft, 50, getWidth() - sliderLeft - 10, 20);
+    smoothSlider .setBounds (sliderLeft, 70, getWidth() - sliderLeft - 10, 20);
+  
 }
 
 void NoiseGateAudioProcessorEditor::sliderValueChanged(Slider* slider) {
     if (slider == &thresholdSlider) {
-        //audioProcessor.thresholdCopy = thresholdSlider.getValue();
         audioProcessor.threshold = (float) thresholdSlider.getValue();
     }
     else if(slider == &smoothSlider) {

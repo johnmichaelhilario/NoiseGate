@@ -1,8 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
 <JUCERPROJECT id="e7m0mY" name="NoiseGate" projectType="audioplug" useAppConfig="0"
-              addUsingNamespaceToJuceHeader="0" displaySplashScreen="1" jucerFormatVersion="1"
-              jucerVersion="5.4.7">
+              addUsingNamespaceToJuceHeader="0" displaySplashScreen="1" jucerFormatVersion="1">
   <MAINGROUP id="zrHtro" name="NoiseGate">
     <GROUP id="{B91FEB86-C372-1668-AAAE-0048F75BE1AA}" name="Source">
       <FILE id="uwtzl4" name="PluginProcessor.cpp" compile="1" resource="0"

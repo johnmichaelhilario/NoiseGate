@@ -56,6 +56,7 @@ public:
     AudioParameterFloat threshold;
     AudioParameterFloat smooth;
 
+    bool isPowerOn = false;
 
 private:
     
