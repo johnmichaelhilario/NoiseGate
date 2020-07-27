@@ -41,8 +41,14 @@ private:
     ToggleButton powerButton;
     Slider thresholdSlider;
     Slider smoothSlider; //also known as return
+
+    Label thresholdLabelValue;
+    Label smoothLabelValue;
+
     Label  thresholdLabel;
     Label  smoothLabel;
+
+    Label pluginTitle;
 
     JUCE_DECLARE_NON_COPYABLE_WITH_LEAK_DETECTOR (NoiseGateAudioProcessorEditor)
 };
