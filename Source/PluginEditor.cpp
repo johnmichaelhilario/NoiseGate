@@ -20,7 +20,8 @@ NoiseGateAudioProcessorEditor::NoiseGateAudioProcessorEditor (NoiseGateAudioProc
     thresholdSlider.setTextBoxStyle(Slider::TextBoxRight, false, 90, 0);
 
     thresholdLabel.setText ("Threshold", juce::dontSendNotification);
-    addAndMakeVisible(thresholdLabel);
+    //addAndMakeVisible(thresholdLabel);
+
 
     //thresholdLabel.attachToComponent (&thresholdSlider, true);
     thresholdSlider.setPopupDisplayEnabled(false, false, this);
@@ -56,7 +57,7 @@ NoiseGateAudioProcessorEditor::NoiseGateAudioProcessorEditor (NoiseGateAudioProc
     pluginTitle.setColour(juce::Label::textColourId, juce::Colours::orange);
     pluginTitle.setFont(juce::Font(23.0f, juce::Font::bold));
 
-    setLookAndFeel(&appLookAndFeel);
+   // setLookAndFeel(&appLookAndFeel);
     //Power button
    // powerButton.setButtonText("Power");
 
@@ -87,6 +88,7 @@ NoiseGateAudioProcessorEditor::NoiseGateAudioProcessorEditor (NoiseGateAudioProc
 
 NoiseGateAudioProcessorEditor::~NoiseGateAudioProcessorEditor()
 {
+ 
 }
 
 //==============================================================================

@@ -30,6 +30,7 @@ NoiseGateAudioProcessor::NoiseGateAudioProcessor()
 
 NoiseGateAudioProcessor::~NoiseGateAudioProcessor()
 {
+   
 }
 
 //==============================================================================
@@ -139,7 +140,6 @@ void NoiseGateAudioProcessor::processBlock (juce::AudioBuffer<float>& buffer, ju
 
     auto thresholdCopy = threshold.get();
     auto smoothCopy = smooth.get();
-
 
     for (auto j = 0; j < buffer.getNumSamples(); ++j)
     {
