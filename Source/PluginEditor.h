@@ -10,6 +10,9 @@
 
 #include <JuceHeader.h>
 #include "PluginProcessor.h"
+#include "PowerButtonLookAndFeel.h"
+
+
 using namespace juce;
 
 //==============================================================================
@@ -31,6 +34,10 @@ public:
 private:
 
     NoiseGateAudioProcessor& audioProcessor;
+    PowerButtonLookAndFeel powerbuttonLookandFeel;
+    
+
+
     ToggleButton powerButton;
     Slider thresholdSlider;
     Slider smoothSlider; //also known as return

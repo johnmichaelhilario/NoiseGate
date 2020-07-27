@@ -22,6 +22,8 @@ NoiseGateAudioProcessorEditor::NoiseGateAudioProcessorEditor (NoiseGateAudioProc
     thresholdLabel.setText ("Threshold", juce::dontSendNotification);
     thresholdLabel.attachToComponent (&thresholdSlider, true);
     thresholdSlider.setPopupDisplayEnabled(true, false, this);
+
+    thresholdSlider.setEnabled(false);
     thresholdSlider.setValue(0.0f);
     thresholdSlider.addListener(this);
 
@@ -33,20 +35,26 @@ NoiseGateAudioProcessorEditor::NoiseGateAudioProcessorEditor (NoiseGateAudioProc
     smoothLabel.setText ("Smooth", juce::dontSendNotification);
     smoothLabel.attachToComponent (&smoothSlider, true);
     smoothSlider.setPopupDisplayEnabled(true, false, this);
+    smoothSlider.setEnabled(false);
     smoothSlider.setValue(0.0f);
     smoothSlider.addListener(this);
-    
-
+    smoothSlider.setLookAndFeel(&powerbuttonLookandFeel);
+    //setLookAndFeel(&); look and feel
     //Power button
-    powerButton.setButtonText("Power");
+   // powerButton.setButtonText("Power");
 
+
+    powerButton.setLookAndFeel(&powerbuttonLookandFeel);
+    
     addAndMakeVisible(&powerButton);
     powerButton.onClick = [this] {
         audioProcessor.isPowerOn = powerButton.getToggleState();
+        smoothSlider.setEnabled(powerButton.getToggleState());
+        thresholdSlider.setEnabled(powerButton.getToggleState());
     };
     addAndMakeVisible(&thresholdSlider);
     addAndMakeVisible(&smoothSlider);
-    setSize (400, 300);
+    setSize (400, 200);
 }
 
 NoiseGateAudioProcessorEditor::~NoiseGateAudioProcessorEditor()
@@ -68,10 +76,9 @@ void NoiseGateAudioProcessorEditor::paint (juce::Graphics& g)
 void NoiseGateAudioProcessorEditor::resized()
 {
     auto sliderLeft = 120;
-    powerButton.setBounds(sliderLeft, 0, 100, 50);
+    powerButton.setBounds(sliderLeft, 0, 50, 50);
     thresholdSlider.setBounds (sliderLeft, 50, getWidth() - sliderLeft - 10, 20);
     smoothSlider .setBounds (sliderLeft, 70, getWidth() - sliderLeft - 10, 20);
-  
 }
 
 void NoiseGateAudioProcessorEditor::sliderValueChanged(Slider* slider) {
