@@ -15,20 +15,19 @@ NoiseGateAudioProcessorEditor::NoiseGateAudioProcessorEditor (NoiseGateAudioProc
 {
 
     //Threshold
-    thresholdSlider.setSliderStyle(Slider::SliderStyle:: LinearBar);
+    thresholdSlider.setSliderStyle(Slider::SliderStyle::RotaryVerticalDrag);
     thresholdSlider.setRange(0.0f,1.0f);
     thresholdSlider.setTextBoxStyle(Slider::TextBoxRight, false, 90, 0);
     addAndMakeVisible (thresholdLabel);
     thresholdLabel.setText ("Threshold", juce::dontSendNotification);
     thresholdLabel.attachToComponent (&thresholdSlider, true);
     thresholdSlider.setPopupDisplayEnabled(true, false, this);
-
     thresholdSlider.setEnabled(false);
     thresholdSlider.setValue(0.0f);
     thresholdSlider.addListener(this);
 
     //Smooth
-    smoothSlider .setSliderStyle(Slider::SliderStyle:: LinearBar);
+    smoothSlider .setSliderStyle(Slider::SliderStyle::RotaryVerticalDrag);
     smoothSlider.setRange(0.0f, 1.0f);
     smoothSlider.setTextBoxStyle(Slider::TextBoxRight, false, 90, 0);
     addAndMakeVisible (thresholdLabel);
@@ -38,8 +37,8 @@ NoiseGateAudioProcessorEditor::NoiseGateAudioProcessorEditor (NoiseGateAudioProc
     smoothSlider.setEnabled(false);
     smoothSlider.setValue(0.0f);
     smoothSlider.addListener(this);
-    smoothSlider.setLookAndFeel(&powerbuttonLookandFeel);
-    //setLookAndFeel(&); look and feel
+
+    setLookAndFeel(&appLookAndFeel);
     //Power button
    // powerButton.setButtonText("Power");
 
