@@ -59,7 +59,6 @@ public:
     bool isPowerOn = false;
 
 private:
-    
     int sampleCountDown;
     float lowPassCoeff;
     //==============================================================================

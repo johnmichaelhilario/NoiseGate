@@ -9,33 +9,66 @@
 #include "PluginProcessor.h"
 #include "PluginEditor.h"
 
+
+
+void NoiseGateAudioProcessorEditor::createTitle(juce::Label* label, juce::String title) {
+    label->setText(title, juce::NotificationType::dontSendNotification);
+    label->setJustificationType(juce::Justification::topLeft);
+    label->setColour(juce::Label::textColourId, juce::Colours::white);
+    label->setBounds(16, 16, 100, 25);
+    label->setFont(25.0f);
+    if (audioProcessor.isPowerOn) {
+        label->setColour(juce::Label::textColourId, UI_Color1);
+        return;
+    }
+}
+void NoiseGateAudioProcessorEditor::createSliderValueLabel(juce::Label& label, juce::Slider& slider)
+{
+    int width = slider.getWidth();
+    int height = slider.getHeight();
+    auto position = slider.getPosition();
+    juce::Logger::writeToLog(position.toString());
+    int x = position.x;
+    int y = position.y + (height * 0.75) + 1;
+    juce::Font labelFont;
+    labelFont.setBold(true);
+    labelFont.setHeight(11.0f);
+    label.setColour(juce::Label::ColourIds::textColourId, getLookAndFeel().findColour(Slider::ColourIds::thumbColourId));
+    label.setText("0.0", juce::NotificationType::dontSendNotification);
+    label.setJustificationType(juce::Justification::centred);
+    label.setColour(juce::Label::ColourIds::outlineColourId, juce::Colour());
+    label.toFront(false);
+    label.setBounds(x, y, width, height * .25);
+    label.setFont(labelFont);
+    label.setEnabled(false);
+    addAndMakeVisible(label);
+}
+
 //==============================================================================
 NoiseGateAudioProcessorEditor::NoiseGateAudioProcessorEditor (NoiseGateAudioProcessor& p)
     : AudioProcessorEditor (&p), audioProcessor (p)
 {
+    //Title
+    createTitle(&pluginTitle, "GATE");
 
+    
     //Threshold
-    thresholdSlider.setSliderStyle(Slider::SliderStyle::RotaryVerticalDrag);
+    thresholdSlider.setSliderStyle(Slider::SliderStyle::Rotary);
     thresholdSlider.setRange(0.0f,1.0f);
-    thresholdSlider.setTextBoxStyle(Slider::TextBoxRight, false, 90, 0);
-
+    thresholdSlider.setTextBoxStyle(Slider::NoTextBox, false, 90, 0);
     thresholdLabel.setText ("Threshold", juce::dontSendNotification);
-    //addAndMakeVisible(thresholdLabel);
-
-
-    //thresholdLabel.attachToComponent (&thresholdSlider, true);
+    thresholdLabel.setJustificationType(juce::Justification::centred);
     thresholdSlider.setPopupDisplayEnabled(false, false, this);
     thresholdSlider.setEnabled(false);
     thresholdSlider.setValue(0.0f);
     thresholdSlider.addListener(this); 
 
     //Smooth
-    smoothSlider .setSliderStyle(Slider::SliderStyle::RotaryVerticalDrag);
+    smoothSlider .setSliderStyle(Slider::SliderStyle::Rotary);
     smoothSlider.setRange(0.0f, 1.0f);
-    smoothSlider.setTextBoxStyle(Slider::TextBoxRight, false, 90, 0);
-  
+    smoothSlider.setTextBoxStyle(Slider::NoTextBox, false, 90, 0);
     smoothLabel.setText ("Smooth", juce::dontSendNotification);
-    //smoothLabel.attachToComponent (&smoothSlider, true);
+    smoothLabel.setJustificationType(juce::Justification::centred);
     smoothSlider.setPopupDisplayEnabled(false, false, this);
     smoothSlider.setEnabled(false);
     smoothSlider.setValue(0.0f);
@@ -52,43 +85,34 @@ NoiseGateAudioProcessorEditor::NoiseGateAudioProcessorEditor (NoiseGateAudioProc
     smoothLabelValue.setJustificationType(juce::Justification::centred);
     smoothLabelValue.setColour(juce::Label::textColourId, juce::Colours::orange);
 
-    //pluginTitle
-    pluginTitle.setText("GATE", juce::dontSendNotification);
-    pluginTitle.setColour(juce::Label::textColourId, juce::Colours::orange);
-    pluginTitle.setFont(juce::Font(23.0f, juce::Font::bold));
 
-   // setLookAndFeel(&appLookAndFeel);
-    //Power button
-   // powerButton.setButtonText("Power");
-
-
+    setLookAndFeel(&appLookAndFeel);
     powerButton.setLookAndFeel(&powerbuttonLookandFeel);
-    
-    addAndMakeVisible(&powerButton);
 
+   
     powerButton.onClick = [this] {
         audioProcessor.isPowerOn = powerButton.getToggleState();
         smoothSlider.setEnabled(powerButton.getToggleState());
         thresholdSlider.setEnabled(powerButton.getToggleState());
+        createTitle(&pluginTitle, "GATE");
     };
 
+    addAndMakeVisible(&powerButton);
     addAndMakeVisible(&pluginTitle);
-
     addAndMakeVisible(&thresholdSlider);
     addAndMakeVisible(thresholdLabel);
-
     addAndMakeVisible(&smoothSlider);
     addAndMakeVisible(&smoothLabel);
 
-    addAndMakeVisible(&thresholdLabelValue);
-    addAndMakeVisible(&smoothLabelValue);
+    setSize (295, 157);
 
-    setSize (300, 150);
+    createSliderValueLabel(thresholdLabelValue, thresholdSlider);
+    createSliderValueLabel(smoothLabelValue, smoothSlider);
 }
 
 NoiseGateAudioProcessorEditor::~NoiseGateAudioProcessorEditor()
 {
- 
+    setLookAndFeel(nullptr);
 }
 
 //==============================================================================
@@ -105,22 +129,15 @@ void NoiseGateAudioProcessorEditor::paint (juce::Graphics& g)
 
 void NoiseGateAudioProcessorEditor::resized()
 {
-    //Title
-    pluginTitle.setBounds(10, 10, 100, 25);
+    const int yOffset = 41;
+    thresholdSlider.setBounds(82, yOffset, 90, 90);
+    smoothSlider.setBounds(180, yOffset, 90, 90);
 
-    //PowerButton
-    powerButton.setBounds(10, 50, 50, 50);
 
-    //threshold objects position
-    thresholdSlider.setBounds(70, -20, 180, 180);
-    thresholdLabelValue.setBounds(89, 101, 50, 20);
-    thresholdLabel.setBounds(80, 120, 100, 20);
+    powerButton.setBounds(16, yOffset +thresholdSlider.getHeight()/2 -25, 50, 50);
 
-    //smooth objects position
-    smoothSlider.setBounds(180, -20, 180, 180);
-    smoothLabelValue.setBounds(200, 101, 50, 20);
-    smoothLabel.setBounds(196, 120, 100, 20);
-
+    thresholdLabel.setBounds(thresholdSlider.getX(), thresholdSlider.getY() + thresholdSlider.getHeight() - 2, thresholdSlider.getWidth(), 12);
+    smoothLabel.setBounds(smoothSlider.getX(), smoothSlider.getY() + smoothSlider.getHeight() - 2, smoothSlider.getWidth(), 12);
 
 }
 
@@ -132,9 +149,8 @@ int smoothFloatToInt(float val) {
 }
 
 int thresholdFloatToInt(float val) {
-    int intValue = 100 * val;
-    const int negativeVal = 200;
-    return (intValue * 2) - negativeVal;
+    int intValue = 200 * val;
+    return (200 - intValue) *-1;
 }
 
 void NoiseGateAudioProcessorEditor::sliderValueChanged(Slider* slider) {

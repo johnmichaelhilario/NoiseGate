@@ -22,15 +22,12 @@ NoiseGateAudioProcessor::NoiseGateAudioProcessor()
     smooth("smooth", "Smooth", 0.0f, 1.0f, 0.8f)
 #endif
 {
-    addParameter(&threshold);
-    addParameter(&smooth);
    
-
 }
 
 NoiseGateAudioProcessor::~NoiseGateAudioProcessor()
 {
-   
+    
 }
 
 //==============================================================================
@@ -135,6 +132,8 @@ void NoiseGateAudioProcessor::processBlock (juce::AudioBuffer<float>& buffer, ju
     if (!isPowerOn)
         return;
 
+    //noisegate.setThreshold();
+
     auto mainInputOutput = getBusBuffer(buffer, true, 0);
     auto sideChainInput = getBusBuffer(buffer, true, 1);
 
@@ -179,9 +178,7 @@ juce::AudioProcessorEditor* NoiseGateAudioProcessor::createEditor()
 //==============================================================================
 void NoiseGateAudioProcessor::getStateInformation (juce::MemoryBlock& destData)
 {
-
     MemoryOutputStream stream(destData, true);
-
     stream.writeFloat(threshold);
     stream.writeFloat(smooth);
 }
@@ -189,10 +186,8 @@ void NoiseGateAudioProcessor::getStateInformation (juce::MemoryBlock& destData)
 void NoiseGateAudioProcessor::setStateInformation (const void* data, int sizeInBytes)
 {
     MemoryInputStream stream(data, static_cast<size_t> (sizeInBytes), false);
-
     threshold.setValueNotifyingHost(stream.readFloat());
     smooth.setValueNotifyingHost(stream.readFloat());
-
 }
 
 //==============================================================================

@@ -29,8 +29,8 @@ public:
     void paint (juce::Graphics&) override;
     void resized() override;
     void sliderValueChanged(Slider* slider) override;
-
-
+    void createTitle(juce::Label* label, juce::String title);
+    void createSliderValueLabel(juce::Label& label, juce::Slider& slider);
 private:
 
     NoiseGateAudioProcessor& audioProcessor;
