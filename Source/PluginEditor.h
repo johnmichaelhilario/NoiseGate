@@ -33,6 +33,11 @@ public:
     void createSliderValueLabel(juce::Label& label, juce::Slider& slider);
 private:
 
+    int knobWidth = 70;
+    int knobHeight = 70;
+    int knobX = 56;
+    int knobY = 30;
+
     NoiseGateAudioProcessor& audioProcessor;
     PowerButtonLookAndFeel powerbuttonLookandFeel;
     AppLookAndFeelCls appLookAndFeel;

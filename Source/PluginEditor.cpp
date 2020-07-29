@@ -15,8 +15,8 @@ void NoiseGateAudioProcessorEditor::createTitle(juce::Label* label, juce::String
     label->setText(title, juce::NotificationType::dontSendNotification);
     label->setJustificationType(juce::Justification::topLeft);
     label->setColour(juce::Label::textColourId, juce::Colours::white);
-    label->setBounds(16, 16, 100, 25);
-    label->setFont(25.0f);
+    label->setBounds(8, 8, 100, 20);
+    label->setFont(20.0f);
     if (audioProcessor.isPowerOn) {
         label->setColour(juce::Label::textColourId, UI_Color1);
         return;
@@ -24,24 +24,27 @@ void NoiseGateAudioProcessorEditor::createTitle(juce::Label* label, juce::String
 }
 void NoiseGateAudioProcessorEditor::createSliderValueLabel(juce::Label& label, juce::Slider& slider)
 {
-    int width = slider.getWidth();
-    int height = slider.getHeight();
-    auto position = slider.getPosition();
-    juce::Logger::writeToLog(position.toString());
-    int x = position.x;
-    int y = position.y + (height * 0.75) + 1;
-    juce::Font labelFont;
-    labelFont.setBold(true);
-    labelFont.setHeight(11.0f);
-    label.setColour(juce::Label::ColourIds::textColourId, getLookAndFeel().findColour(Slider::ColourIds::thumbColourId));
-    label.setText("0.0", juce::NotificationType::dontSendNotification);
-    label.setJustificationType(juce::Justification::centred);
-    label.setColour(juce::Label::ColourIds::outlineColourId, juce::Colour());
-    label.toFront(false);
-    label.setBounds(x, y, width, height * .25);
-    label.setFont(labelFont);
-    label.setEnabled(false);
-    addAndMakeVisible(label);
+ 
+        int width = slider.getWidth();
+        int height = slider.getHeight();
+        auto position = slider.getPosition();
+        juce::Logger::writeToLog(position.toString());
+        int x = position.x;
+        int y = position.y + (height * 0.75) + 1;
+        juce::Font labelFont;
+        labelFont.setBold(true);
+        labelFont.setHeight(11.0f);
+        label.setColour(juce::Label::ColourIds::textColourId, getLookAndFeel().findColour(Slider::ColourIds::thumbColourId));
+       // defaultValue = displayFreq(slider.getValue());
+        //label.setText(defaultValue, juce::NotificationType::dontSendNotification);
+        label.setJustificationType(juce::Justification::centred);
+        label.setColour(juce::Label::ColourIds::outlineColourId, juce::Colour());
+        label.toFront(false);
+        label.setBounds(x, y, width, height * .25);
+        label.setFont(labelFont);
+        label.setEnabled(false);
+        addAndMakeVisible(&label);
+    
 }
 
 //==============================================================================
@@ -49,7 +52,7 @@ NoiseGateAudioProcessorEditor::NoiseGateAudioProcessorEditor (NoiseGateAudioProc
     : AudioProcessorEditor (&p), audioProcessor (p)
 {
     //Title
-    createTitle(&pluginTitle, "GATE");
+    createTitle(&pluginTitle, "Gate");
 
     
     //Threshold
@@ -58,6 +61,7 @@ NoiseGateAudioProcessorEditor::NoiseGateAudioProcessorEditor (NoiseGateAudioProc
     thresholdSlider.setTextBoxStyle(Slider::NoTextBox, false, 90, 0);
     thresholdLabel.setText ("Threshold", juce::dontSendNotification);
     thresholdLabel.setJustificationType(juce::Justification::centred);
+    thresholdLabel.setFont(12.0f);
     thresholdSlider.setPopupDisplayEnabled(false, false, this);
     thresholdSlider.setEnabled(false);
     thresholdSlider.setValue(0.0f);
@@ -69,6 +73,7 @@ NoiseGateAudioProcessorEditor::NoiseGateAudioProcessorEditor (NoiseGateAudioProc
     smoothSlider.setTextBoxStyle(Slider::NoTextBox, false, 90, 0);
     smoothLabel.setText ("Smooth", juce::dontSendNotification);
     smoothLabel.setJustificationType(juce::Justification::centred);
+    smoothLabel.setFont(12.0f);
     smoothSlider.setPopupDisplayEnabled(false, false, this);
     smoothSlider.setEnabled(false);
     smoothSlider.setValue(0.0f);
@@ -84,7 +89,7 @@ NoiseGateAudioProcessorEditor::NoiseGateAudioProcessorEditor (NoiseGateAudioProc
     smoothLabelValue.setText("0", juce::dontSendNotification);
     smoothLabelValue.setJustificationType(juce::Justification::centred);
     smoothLabelValue.setColour(juce::Label::textColourId, juce::Colours::orange);
-
+  
 
     setLookAndFeel(&appLookAndFeel);
     powerButton.setLookAndFeel(&powerbuttonLookandFeel);
@@ -104,7 +109,7 @@ NoiseGateAudioProcessorEditor::NoiseGateAudioProcessorEditor (NoiseGateAudioProc
     addAndMakeVisible(&smoothSlider);
     addAndMakeVisible(&smoothLabel);
 
-    setSize (295, 157);
+    setSize (225, 120);
 
     createSliderValueLabel(thresholdLabelValue, thresholdSlider);
     createSliderValueLabel(smoothLabelValue, smoothSlider);
@@ -129,13 +134,23 @@ void NoiseGateAudioProcessorEditor::paint (juce::Graphics& g)
 
 void NoiseGateAudioProcessorEditor::resized()
 {
-    const int yOffset = 41;
-    thresholdSlider.setBounds(82, yOffset, 90, 90);
-    smoothSlider.setBounds(180, yOffset, 90, 90);
 
 
-    powerButton.setBounds(16, yOffset +thresholdSlider.getHeight()/2 -25, 50, 50);
+    const int spacing = 10;
+    const int yOffset = 20;
+ /*   thresholdSlider.setBounds(50, yOffset, 80, 80);
+    smoothSlider.setBounds(140, yOffset, 80, 80);*/
 
+    juce::Rectangle<int> sliderArea{ knobX,knobY,knobWidth, knobHeight };
+    thresholdSlider.setBounds(sliderArea);
+    sliderArea.setX(thresholdSlider.getX() + knobWidth + spacing);
+    smoothSlider.setBounds(sliderArea);
+
+  
+
+    powerButton.setBounds(8, this->getHeight()/2 -25, 45, 45);
+    
+  
     thresholdLabel.setBounds(thresholdSlider.getX(), thresholdSlider.getY() + thresholdSlider.getHeight() - 2, thresholdSlider.getWidth(), 12);
     smoothLabel.setBounds(smoothSlider.getX(), smoothSlider.getY() + smoothSlider.getHeight() - 2, smoothSlider.getWidth(), 12);
 
