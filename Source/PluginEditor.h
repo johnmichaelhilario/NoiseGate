@@ -11,7 +11,9 @@
 #include <JuceHeader.h>
 #include "PluginProcessor.h"
 #include "PowerButtonLookAndFeel.h"
+#include "AboutButtonLookandFeel.h"
 #include "AppInc.h"
+#include "DialogComponent.h"
 
 using namespace juce;
 
@@ -27,12 +29,15 @@ public:
 
     //==============================================================================
     void paint (juce::Graphics&) override;
-    void resized() override;
+    void resized() override;   
+
     void sliderValueChanged(Slider* slider) override;
     void createTitle(juce::Label* label, juce::String title);
     void createSliderValueLabel(juce::Label& label, juce::Slider& slider);
-private:
+    void callAlertWindows(String title, String description, String company, String copyright);
 
+private:
+    
     int knobWidth = 70;
     int knobHeight = 70;
     int knobX = 56;
@@ -40,10 +45,12 @@ private:
 
     NoiseGateAudioProcessor& audioProcessor;
     PowerButtonLookAndFeel powerbuttonLookandFeel;
+    AboutButtonLookandFeel aboutbuttonLookandFeel;
+    AlertWindow alertWindow;
     AppLookAndFeelCls appLookAndFeel;
-
-
+    PluginDialog pluginDialog;
     ToggleButton powerButton;
+    ToggleButton aboutButton;
     Slider thresholdSlider;
     Slider smoothSlider; //also known as return
 

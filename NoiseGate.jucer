@@ -5,16 +5,21 @@
               companyName="Volume.com">
   <MAINGROUP id="zrHtro" name="NoiseGate">
     <GROUP id="{B91FEB86-C372-1668-AAAE-0048F75BE1AA}" name="Source">
+      <FILE id="mxRO88" name="AboutButtonLookandFeel.h" compile="0" resource="0"
+            file="Source/AboutButtonLookandFeel.h"/>
       <FILE id="O8C8IA" name="AppInc.h" compile="0" resource="0" file="Source/AppInc.h"/>
       <FILE id="Me1mZy" name="AppLookAndFeel.h" compile="0" resource="0"
             file="Source/AppLookAndFeel.h"/>
       <GROUP id="{A89C0295-264D-2D8B-5559-60B07DFC6313}" name="Images">
+        <FILE id="XYTbJT" name="question.svg" compile="0" resource="1" file="C:/Users/John Michael Hilario/Desktop/question.svg"/>
         <FILE id="Rglxxp" name="power.svg" compile="0" resource="1" file="../../lookandfeel/power.svg"/>
       </GROUP>
       <FILE id="G4EBAN" name="PowerButtonLookAndFeel.h" compile="0" resource="0"
             file="Source/PowerButtonLookAndFeel.h"/>
       <FILE id="uwtzl4" name="PluginProcessor.cpp" compile="1" resource="0"
             file="Source/PluginProcessor.cpp"/>
+      <FILE id="dzgWeK" name="DialogComponent.h" compile="0" resource="0"
+            file="Source/DialogComponent.h"/>
       <FILE id="glczvq" name="PluginProcessor.h" compile="0" resource="0"
             file="Source/PluginProcessor.h"/>
       <FILE id="INXFAw" name="PluginEditor.cpp" compile="1" resource="0"
